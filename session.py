@@ -7,7 +7,7 @@ app = Flask(__name__)
 #   DATABASE CONFIG   #
 #######################
 
-db = mysql.connect(host="127.0.0.1", user="root", password="rootroot", database="users")
+db = mysql.connect(host="localhost", user="root", password="rootroot", database="users")
 cur = db.cursor()
 
 
