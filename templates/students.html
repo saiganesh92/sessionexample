@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Squirelogic Solutions</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{{ url_for('index') }}">SquireLogic</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Students <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{{ url_for('hr') }}">HR</a></li>
+          <li><a href="{{ url_for('students') }}">Students</a></li>
+          <li><a href="{{ url_for('trainers') }}">Trainers</a></li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+          <a href="#">
+            <span class="glyphicon glyphicon-user"></span>
+            {% if session_user_name %}
+            Welcome {{ session_user_name }}
+            {% endif %}
+          </a>
+      </li>
+      <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <div class="form-group">
+    <a href="{{ url_for('crud_students') }}" class="btn btn-primary">Add</a>
+    <!-- Modal -->
+    {% if request.args.get('error') %}
+    <div class="alert alert-danger">
+      <strong>Danger!</strong>{{ request.args.get('error') }}
+    </div>
+    {% endif %}
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Sl No</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Email</th>
+        <th>Batch</th>
+        <th>Phone</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in students_data %}
+    <tr>
+        <td></td>
+        <td>{{ item['name'] }}</td>
+        <td>{{ item['gender'] }}</td>
+        <td>{{ item['email'] }}</td>
+        <td>{{ item['batch'] }}</td>
+        <td>{{ item['phone'] }}</td>
+      <td>
+        <a href="{{ url_for('crud_students', students_id=item['studentsid']) }}" class="btn btn-warning">Edit</a> &nbsp;
+          <a href="#" class="btn btn-danger">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+</body>
+</html>

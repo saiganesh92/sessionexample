@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{{ url_for('index') }}">SquireLogic</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Trainers <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{{ url_for('hr') }}">HR</a></li>
+          <li><a href="{{ url_for('students') }}">Students</a></li>
+          <li><a href="{{ url_for('trainers') }}">Trainers</a></li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+          <a href="#">
+            <span class="glyphicon glyphicon-user"></span>
+            {% if session_user_name %}
+            Welcome {{ session_user_name }}
+            {% endif %}
+          </a>
+      </li>
+      <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <h2>Add Trainers</h2>
+  <form action="{{ url_for('trainers') }}" method="POST">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter Name " name="name" required>
+      </div>
+      <div class="form-group">
+        <label>Sex</label>
+        <div class="radio">
+          <label><input type="radio" value="male" name="gender_type"  checked>Male</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" value="female" name="gender_type" >Female</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dept">Specification</label>
+        <input type="dept" class="form-control" id="dept" placeholder="Enter Specification" name="dept" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone No:</label>
+        <input type="number" class="form-control" id="phone" placeholder="Enter Phone Number" name="phone" required>
+      </div>
+      <button type="reset" class="btn btn-warning" >Clear</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+</body>
+</html>
