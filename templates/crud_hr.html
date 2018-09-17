@@ -37,35 +37,36 @@
   </div>
 </nav>
 <div class="container">
-  <h2>Add HR</h2>
-  <form action="{{ url_for('hr') }}" method="POST">
+  <h2>{% if method_type=='edit' %} Edit {% else %} Add {% endif %} HR  </h2>
+  <form action="{% if method_type=='edit' %}{{ url_for('crud_hr') }}{% else %}{{ url_for('hr') }}{% endif %}" method="POST">
       <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" class="form-control" id="name" placeholder="Enter Name " name="name" required>
+        <input type="text" class="form-control" id="name" placeholder="Enter Name " name="name" required value="{% if method_type=='edit'%} {{ hr_data['name'] }}{% endif %}">
+          {% if method_type=='edit' %}<input type="hidden" id="id" name="id" value="{{ hr_data['id'] }}">{% endif %}
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required value="{% if method_type=='edit'%} {{ hr_data['email_id'] }}{% endif %}">
       </div>
       <div class="form-group">
         <label for="phone">Phone No:</label>
-        <input type="number" class="form-control" id="phone" placeholder="Enter Phone Number" name="phone" required>
+        <input type="number" class="form-control" id="phone" placeholder="Enter Phone Number" name="phone" required value="{% if method_type=='edit' %}{{ hr_data['phone_no']}}{% endif %}">
       </div>
       <div class="form-group">
         <label>Sex</label>
         <div class="radio">
-          <label><input type="radio" value="male" name="gender_type"  checked>Male</label>
+          <label><input type="radio" value="male" name="gender_type" {% if hr_data['sex']=='male' %} checked{% endif %}>Male</label>
         </div>
         <div class="radio">
-          <label><input type="radio" value="female" name="gender_type" >Female</label>
+          <label><input type="radio" value="female" name="gender_type" {% if hr_data['sex']=='female' %} checked{% endif %} >Female</label>
         </div>
       </div>
       <div class="form-group">
         <label for="salary">Salary</label>
-        <input type="number" class="form-control" id="salary" placeholder="Enter Salary" name="salary" required>
+        <input type="number" class="form-control" id="salary" placeholder="Enter Salary" name="salary" required value="{% if method_type=='edit'%}{{ hr_data['salary'] }}{% endif %}">
       </div>
       <button type="reset" class="btn btn-warning" >Clear</button>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" > {% if method_type=='edit' %}Update {% else %} Submit {% endif %}</button>
   </form>
 </div>
 </body>

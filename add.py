@@ -29,6 +29,12 @@ def data_to_dict(cursor):
     return result
 
 
+def add_serial_no(data):
+    for item in data:
+        item['sno'] = data.index(item)+1
+    return data
+
+
 @app.route('/')
 @login_required
 def index():
@@ -66,7 +72,7 @@ def hr():
         username_session = escape(session['username']).capitalize()
         cur.execute("SELECT * FROM hr;")
         result = data_to_dict(cur)
-        return render_template('hr.html', session_user_name=username_session, hr_data=result)
+        return render_template('hr.html', session_user_name=username_session, hr_data=add_serial_no(result))
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
@@ -88,12 +94,36 @@ def hr():
 def crud_hr():
     if request.method == 'GET':
         hr_id = request.args.get('hr_id')
-        select_query = "SELECT * FROM hr where id=%s"
-        select_data = (hr_id,)
-        cur.execute(select_query, select_data)
-        result = data_to_dict(cur)
-        print(result)
-        return render_template('crud_hr.html')
+        method_type = request.args.get('method_type')
+        if method_type == 'add':
+            return render_template('crud_hr.html', method_type=method_type)
+        elif method_type == 'delete':
+            pass
+        else:
+            select_query = "SELECT * FROM hr where id=%s"
+            select_data = (hr_id,)
+            cur.execute(select_query, select_data)
+            result = data_to_dict(cur)
+            print(result)
+            return render_template('crud_hr.html', method_type=method_type, hr_data=result[0])
+    if request.method == 'POST':
+        id = request.form['id']
+        name = request.form['name']
+        email = request.form['email']
+        phone_no = request.form['phone']
+        sex = request.form['gender_type']
+        salary = request.form['salary']
+        error = None
+        try:
+            cur.execute("""
+                           UPDATE hr
+                           SET name=%s, email_id=%s, phone_no=%s, sex=%s, salary=%s
+                           WHERE id=%s
+                        """, (name, email, phone_no, sex, salary, id))
+            db.commit()
+        except Exception as ex:
+            error = ex
+        return redirect(url_for('hr', error=error))
 
 
 @app.route('/students', methods=['GET', 'POST'])
@@ -103,8 +133,8 @@ def students():
         username_session = escape(session['username']).capitalize()
         cur.execute("SELECT * FROM students;")
         result = data_to_dict(cur)
-        return render_template('students.html', session_user_name=username_session, students_data=result)
-    if request.method == 'POST':
+        return render_template('students.html', session_user_name=username_session, students_data=add_serial_no(result))
+    if request.method == "POST":
         name = request.form['name']
         sex = request.form['gender_type']
         dept = request.form['dept']
@@ -142,7 +172,7 @@ def trainers():
     username_session = escape(session['username']).capitalize()
     cur.execute("SELECT * FROM trainers;")
     result = data_to_dict(cur)
-    return render_template('trainers.html', session_username_name=username_session, trainer_data=result)
+    return render_template('trainers.html', session_username_name=username_session, trainer_data=add_serial_no(result))
 
 
 @app.route('/trainerse', methods=['GET', 'POST'])

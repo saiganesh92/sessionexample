@@ -39,7 +39,7 @@
 </nav>
 <div class="container">
   <div class="form-group">
-    <a href="{{ url_for('crud_hr') }}" class="btn btn-primary">Add</a>
+    <a href="{{ url_for('crud_hr', method_type='add') }}" class="btn btn-primary">Add</a>
    <!-- <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal">Add</button> -->
   </div>
   <!-- Modal -->
@@ -62,20 +62,18 @@
       </tr>
     </thead>
     <tbody>
-    {% set count = 1 %}
     {% for item in hr_data %}
     <tr>
-        <td>{{ count }}</td>
+        <td>{{ item['sno']  }}</td>
         <td>{{ item['name'] }}</td>
         <td>{{ item['email_id'] }}</td>
         <td>{{ item['phone_no'] }}</td>
         <td>{{ item['salary'] }}</td>
         <td>
-          <a href="{{ url_for('crud_hr', hr_id=item['id']) }}" class="btn btn-warning">Edit</a> &nbsp;
+          <a href="{{ url_for('crud_hr', hr_id=item['id'],  method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
           <a href="#" class="btn btn-danger">Delete</a>
         </td>
     </tr>
-    {% set count = count + 1 %}
     {% endfor %}
     </tbody>
   </table>
