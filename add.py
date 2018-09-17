@@ -67,7 +67,7 @@ def login():
 @app.route('/hr', methods=['GET', 'POST'])
 @login_required
 def hr():
-    error= None
+    error = None
     if request.method == "GET":
         username_session = escape(session['username']).capitalize()
         cur.execute("SELECT * FROM hr;")
@@ -129,6 +129,7 @@ def crud_hr():
 @app.route('/students', methods=['GET', 'POST'])
 @login_required
 def students():
+    error = None
     if request.method == "GET":
         username_session = escape(session['username']).capitalize()
         cur.execute("SELECT * FROM students;")
