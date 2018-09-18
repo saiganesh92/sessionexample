@@ -71,7 +71,7 @@
         <td>{{ item['salary'] }}</td>
         <td>
           <a href="{{ url_for('crud_hr', hr_id=item['id'],  method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
-          <a href="#" class="btn btn-danger">Delete</a>
+          <a href="{{ url_for('crud_hr', hr_id=item['id'],  method_type='delete') }}" class="btn btn-danger">Delete</a>
         </td>
     </tr>
     {% endfor %}

@@ -95,16 +95,23 @@ def crud_hr():
     if request.method == 'GET':
         hr_id = request.args.get('hr_id')
         method_type = request.args.get('method_type')
+        error = None
         if method_type == 'add':
             return render_template('crud_hr.html', method_type=method_type)
         elif method_type == 'delete':
-            pass
+            delete_query = "DELETE FROM hr WHERE id = %s"
+            select_data = (hr_id,)
+            try:
+                cur.execute(delete_query, select_data)
+                db.commit()
+            except Exception as ex:
+                error = ex
+            return redirect(url_for('hr', error=error))
         else:
             select_query = "SELECT * FROM hr where id=%s"
             select_data = (hr_id,)
             cur.execute(select_query, select_data)
             result = data_to_dict(cur)
-            print(result)
             return render_template('crud_hr.html', method_type=method_type, hr_data=result[0])
     if request.method == 'POST':
         id = request.form['id']
