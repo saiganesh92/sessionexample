@@ -47,7 +47,7 @@
       <div class="form-group">
         <label>Sex</label>
         <div class="radio">
-          <label><input type="radio" value="male" name="gender_type"  checked>Male</label>
+          <label><input type="radio" value="male" name="gender_type"  {% if method_type =='edit' %} {% if hr_data['sex']=='male'%} checked{% endif %} {%  endif %}>Male</label>
         </div>
         <div class="radio">
           <label><input type="radio" value="female" name="gender_type" >Female</label>
