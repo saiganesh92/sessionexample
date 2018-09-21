@@ -37,11 +37,12 @@
   </div>
 </nav>
 <div class="container">
-  <h2>Add Students</h2>
-  <form action="{{ url_for('students') }}" method="POST">
+  <h2>{% if method_type=='edit' %} Edit {% else %} Add {% endif %} Add Students</h2>
+  <form action="{% if method_type=='edit' %}{{ url_for('crud_students') }}{% else %}{{ url_for('students') }}{% endif %}" method="POST">
       <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" class="form-control" id="name" placeholder="Enter Name " name="name" required>
+        <input type="text" class="form-control" id="name" placeholder="Enter Name " name="name" required value="{% if method_type=='edit'%} {{ students_data['name'] }}{% endif %}">
+          {% if method_type=='edit' %}<input type="hidden" id="id" name="id" value="{{ students_data['id'] }}">{% endif %}
       </div>
       <div class="form-group">
         <label>Sex</label>
