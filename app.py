@@ -166,6 +166,7 @@ def students():
 def crud_students():
     if request.method == 'GET':
         students_id = request.args.get('students_id')
+
         select_query = "SELECT * FROM students where id=%s"
         select_data = (students_id,)
         cur.execute(select_query, select_data)
