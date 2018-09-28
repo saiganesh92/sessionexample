@@ -148,10 +148,10 @@ def students():
         dept = request.form['dept']
         email = request.form['email']
         batch = request.form['batch']
-        phone_no = request.form['phone']
+        phone = request.form['phone']
         add_std = "INSERT INTO students (name, gender, dept, email, batch, phone) VALUES (%s, %s, %s, %s, %s ," \
                   "%s) "
-        data_std = (name, sex, dept, email, batch, phone_no)
+        data_std = (name, sex, dept, email, batch, phone)
         try:
             cur.execute(add_std, data_std)
             db.commit()
@@ -166,13 +166,45 @@ def students():
 def crud_students():
     if request.method == 'GET':
         students_id = request.args.get('students_id')
-
-        select_query = "SELECT * FROM students where id=%s"
-        select_data = (students_id,)
-        cur.execute(select_query, select_data)
-        result = data_to_dict(cur)
-        print(result)
-        return render_template('crud_students.html')
+        method_type = request.args.get('method_type')
+        error = None
+        if method_type == 'add':
+            return render_template('crud_students.html', method_type=method_type)
+        elif method_type == 'delete':
+            delete_query = "DELETE FROM students WHERE id = %s"
+            select_data = (students_id,)
+            try:
+                cur.execute(delete_query, select_data)
+                db.commit()
+            except Exception as ex:
+                error = ex
+            return redirect(url_for('hr', error=error))
+        else:
+            select_query = "SELECT * FROM students where id=%s"
+            select_data = (students_id,)
+            cur.execute(select_query, select_data)
+            result = data_to_dict(cur)
+            print(result)
+            return render_template('crud_students.html', method_type=method_type, students_data=result[0])
+    if request.method == 'POST':
+        id = request.form['id']
+        name = request.form['name']
+        sex = request.form['gender_type']
+        dept = request.form['dept']
+        email = request.form['email']
+        batch = request.form['batch']
+        phone = request.form['phone']
+        error = None
+        try:
+            cur.execute("""
+                               UPDATE students
+                               SET name=%s, sex=%s,dept,email=%s,batch=%s, phone=%s,
+                               WHERE id=%s
+                            """, (name, sex, dept, email, batch, phone, id))
+            db.commit()
+        except Exception as ex:
+            error = ex
+        return redirect(url_for('students', error=error))
 
 
 @app.route('/trainers', methods=['GET', 'POST'])
