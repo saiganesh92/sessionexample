@@ -39,15 +39,17 @@
 </nav>
 <div class="container">
   <div class="form-group">
-    <a href="{{ url_for('crud_students') }}" class="btn btn-primary">Add</a>
-    <!-- Modal -->
+    <a href="{{ url_for('crud_students', method_type='add') }}" class="btn btn-primary">Add</a>
+  </div>
+  <div>
     {% if request.args.get('error') %}
     <div class="alert alert-danger">
       <strong>Danger!</strong>{{ request.args.get('error') }}
     </div>
     {% endif %}
-    <table class="table">
-    <thead>
+  </div>
+   <table class="table">
+   <thead>
       <tr>
         <th>Sl No</th>
         <th>Name</th>
@@ -58,9 +60,9 @@
         <th>Phone</th>
         <th>Action</th>
       </tr>
-    </thead>
-    <tbody>
-    {% for item in students_data %}
+   </thead>
+   <tbody>
+   {% for item in students_data %}
     <tr>
         <td>{{ item['sno'] }}</td>
         <td>{{ item['name'] }}</td>
@@ -70,15 +72,24 @@
         <td>{{ item['batch'] }}</td>
         <td>{{ item['phone'] }}</td>
       <td>
-        <a href="{{ url_for('crud_students', students_id=item['studentsid']) }}" class="btn btn-warning">Edit</a> &nbsp;
-          <a href="#" class="btn btn-danger">Delete</a>
+          <a href="{{ url_for('crud_students', students_id = item['id'], method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
+          <a href="{{ url_for('crud_students', students_id = item['id'], method_type='delete') }}" class="btn btn-danger">Delete</a>
       </td>
     </tr>
     {% endfor %}
     </tbody>
   </table>
 </div>
+<script type="text/javascript">
+  $(function(){
+    {% if request.args.get('single_single_data') %}
+      console.log(jQuery.parseJSON("{{ request.args.get('students_single_data') }}"));
 
+      alert("its here");
+
+    {% endif %}
+  });
+</script>
 
 </body>
 </html>

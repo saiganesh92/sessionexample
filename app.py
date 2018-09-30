@@ -144,7 +144,7 @@ def students():
         return render_template('students.html', session_user_name=username_session, students_data=add_serial_no(result))
     if request.method == "POST":
         name = request.form['name']
-        sex = request.form['gender_type']
+        sex = request.form['gender']
         dept = request.form['dept']
         email = request.form['email']
         batch = request.form['batch']
@@ -189,7 +189,7 @@ def crud_students():
     if request.method == 'POST':
         id = request.form['id']
         name = request.form['name']
-        sex = request.form['gender_type']
+        sex = request.form['gender']
         dept = request.form['dept']
         email = request.form['email']
         batch = request.form['batch']
@@ -198,7 +198,7 @@ def crud_students():
         try:
             cur.execute("""
                                UPDATE students
-                               SET name=%s, sex=%s,dept,email=%s,batch=%s, phone=%s,
+                               SET name=%s, gender=%s,dept=%s ,email=%s ,batch=%s, phone=%s,
                                WHERE id=%s
                             """, (name, sex, dept, email, batch, phone, id))
             db.commit()
