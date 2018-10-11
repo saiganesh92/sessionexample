@@ -210,23 +210,70 @@ def crud_students():
 @app.route('/trainers', methods=['GET', 'POST'])
 @login_required
 def trainers():
-    username_session = escape(session['username']).capitalize()
-    cur.execute("SELECT * FROM trainers;")
-    result = data_to_dict(cur)
-    return render_template('trainers.html', session_username_name=username_session, trainer_data=add_serial_no(result))
+    error = None
+    if request.method == 'GET':
+        username_session = escape(session['username']).capitalize()
+        cur.execute("SELECT * FROM trainers;")
+        result = data_to_dict(cur)
+        return render_template('trainers.html', session_user_name=username_session, trainer_data=add_serial_no(result))
+    if request.method == 'POST':
+        name = request.form['name']
+        sex = request.form['gender']
+        dept = request.form['specification']
+        email = request.form['email']
+        phone_no = request.form['phone_no']
+        add_trainer = "INSERT INTO trainers (name, gender, specification ,email, phone_no) VALUES (%s, %s, %s, %s, %s)"
+        data_trainer = (name, sex, dept, email, phone_no)
+        try:
+            cur.execute(add_trainer, data_trainer)
+            db.commit()
+        except Exception as ex:
+            error = ex
+        return redirect(url_for('trainer', error=error))
 
 
-@app.route('/trainerse', methods=['GET', 'POST'])
+@app.route('/trainer', methods=['GET', 'POST'])
 @login_required
 def crud_trainers():
     if request.method == 'GET':
-        trainers_id = request.args.get('trainers_id')
-        select_query = "SELECT * FROM trainers where id=%s"
-        select_data = (trainers_id,)
-        cur.execute(select_query, select_data)
-        result = data_to_dict(cur)
-        print(result)
-        return render_template('crud_trainers.html')
+            trainer_id = request.args.get('trainer_id')
+            method_type = request.args.get('method_type')
+            error = None
+            if method_type == 'add':
+                return render_template('crud_trainers.html', method_type=method_type)
+            elif method_type == 'delete':
+                delete_query = "DELETE FROM trainers WHERE id = %s"
+                select_data = (trainer_id,)
+                try:
+                    cur.execute(delete_query, select_data)
+                    db.commit()
+                except Exception as ex:
+                    error = ex
+                return redirect(url_for('trainer', error=error))
+            else:
+                select_query = "SELECT * FROM trainers where id=%s"
+                select_data = (trainer_id,)
+                cur.execute(select_query, select_data)
+                result = data_to_dict(cur)
+                return render_template('crud_trainers.html', method_type=method_type, trainer_data=result[0])
+    if request.method == 'POST':
+        id = request.form['id']
+        name = request.form['name']
+        gender = request.form['gender']
+        specification = request.form['specification']
+        email = request.form['email']
+        phone_no = request.form['phone_no']
+        error = None
+        try:
+            cur.execute("""
+                           UPDATE trainers
+                           SET name=%s, gender=%s, specification=%s, email=%s, phone_no=%s,
+                           WHERE id=%s
+                        """, (name, gender, specification, email, phone_no, id))
+            db.commit()
+        except Exception as ex:
+            error = ex
+        return redirect(url_for('trainer', error=error))
 
 
 @app.route('/logout')

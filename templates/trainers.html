@@ -18,7 +18,7 @@
     <ul class="nav navbar-nav">
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Trainers <span class="caret"></span></a>
         <ul class="dropdown-menu">
-         <li><a href="{{ url_for('hr') }}">HR</a></li>
+          <li><a href="{{ url_for('hr') }}">HR</a></li>
           <li><a href="{{ url_for('students') }}">Students</a></li>
           <li><a href="{{ url_for('trainers') }}">Trainers</a></li>
         </ul>
@@ -39,12 +39,15 @@
 </nav>
 <div class="container">
     <div class="form-group">
-    <a href="{{ url_for('crud_trainers') }}" class="btn btn-primary">Add</a>
+    <a href="{{ url_for('crud_trainers',method_type='add') }}" class="btn btn-primary">Add</a>
+    </div>
+    <div>
         {% if request.args.get('error') %}
     <div class="alert alert-danger">
       <strong>Danger!</strong>{{ request.args.get('error') }}
     </div>
     {% endif %}
+    </div>
   <table class="table">
     <thead>
       <tr>
@@ -67,12 +70,25 @@
         <td>{{ item['email'] }}</td>
         <td>{{ item['phone_no'] }}</td>
 
-        <td><button type="button" class="btn btn-warning">Edit</button> &nbsp; <button type="button" class="btn btn-danger">Delete</button></td>
+        <td>
+          <a href="{{ url_for('crud_trainers', trainer_id=item['id'],  method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
+          <a href="{{ url_for('crud_trainers', trainer_id=item['id'],  method_type='delete') }}" class="btn btn-danger">Delete</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
   </table>
 </div>
+<script type="text/javascript">
+  $(function(){
+    {% if request.args.get('trainer_single_data') %}
+      console.log(jQuery.parseJSON("{{ request.args.get('trainer_single_data') }}"));
+
+      alert("its here");
+
+    {% endif %}
+  });
+</script>
 
 
 </body>
