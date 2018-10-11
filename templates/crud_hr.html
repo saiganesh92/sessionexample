@@ -37,7 +37,7 @@
   </div>
 </nav>
 <div class="container">
-  <h2>{% if method_type=='edit' %} Edit {% else %} Add {% endif %} Add HR  </h2>
+  <h2>{% if method_type=='edit' %} Edit {% else %} Add {% endif %} HR  </h2>
   <form action="{% if method_type=='edit' %}{{ url_for('crud_hr') }}{% else %}{{ url_for('hr') }}{% endif %}" method="POST">
       <div class="form-group">
         <label for="name">Name:</label>

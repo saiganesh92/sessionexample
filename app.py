@@ -144,14 +144,14 @@ def students():
         return render_template('students.html', session_user_name=username_session, students_data=add_serial_no(result))
     if request.method == "POST":
         name = request.form['name']
-        sex = request.form['gender']
+        gender = request.form['gender']
         dept = request.form['dept']
         email = request.form['email']
         batch = request.form['batch']
         phone = request.form['phone']
         add_std = "INSERT INTO students (name, gender, dept, email, batch, phone) VALUES (%s, %s, %s, %s, %s ," \
                   "%s) "
-        data_std = (name, sex, dept, email, batch, phone)
+        data_std = (name, gender, dept, email, batch, phone)
         try:
             cur.execute(add_std, data_std)
             db.commit()
@@ -189,7 +189,7 @@ def crud_students():
     if request.method == 'POST':
         id = request.form['id']
         name = request.form['name']
-        sex = request.form['gender']
+        gender = request.form['gender']
         dept = request.form['dept']
         email = request.form['email']
         batch = request.form['batch']
@@ -200,7 +200,7 @@ def crud_students():
                                UPDATE students
                                SET name=%s, gender=%s,dept=%s ,email=%s ,batch=%s, phone=%s,
                                WHERE id=%s
-                            """, (name, sex, dept, email, batch, phone, id))
+                            """, (name, gender, dept, email, batch, phone, id))
             db.commit()
         except Exception as ex:
             error = ex
