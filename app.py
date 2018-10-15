@@ -276,6 +276,28 @@ def crud_trainers():
         return redirect(url_for('trainer', error=error))
 
 
+@app.route('/course', methods=['GET', 'POST'])
+@login_required
+def course():
+    error=None
+    if request.method == 'GET':
+        username_session = escape(session['username']).capitalize()
+        cur.execute("SELECT * FROM course;")
+        result = data_to_dict(cur)
+        return render_template('course.html', session_user_name=username_session, course_data=add_serial_no(result))
+    if request.method == 'POST':
+        coursename = request.form['coursename']
+        coursedetails=request.form['coursedetails']
+        add_course = "INSERT INTO course (coursename, coursedetails) VALUES (%s, %s, %s, %s, %s)"
+        data_course = (coursename,coursedetails)
+        try:
+            cur.execute(add_course, data_course)
+            db.commit()
+        except Exception as ex:
+            error = ex
+        return redirect(url_for('course', error=error))
+
+
 @app.route('/logout')
 @login_required
 def logout():

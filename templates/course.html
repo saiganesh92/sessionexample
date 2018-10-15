@@ -16,16 +16,14 @@
       <a class="navbar-brand" href="{{ url_for('index') }}">SquireLogic</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Students <span class="caret"></span></a>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">HR <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="{{ url_for('hr') }}">HR</a></li>
           <li><a href="{{ url_for('students') }}">Students</a></li>
           <li><a href="{{ url_for('trainers') }}">Trainers</a></li>
         </ul>
       </li>
-        <ul class="nav navbar-nav" >
-            <li class="button"><a href="#">Course</a></li>
-        </ul>
+      <li class="active"><a href="{{ url_for('course') }}">course</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
@@ -42,8 +40,10 @@
 </nav>
 <div class="container">
   <div class="form-group">
-    <a href="{{ url_for('crud_students', method_type='add') }}" class="btn btn-primary">Add</a>
+    <a href="{{ url_for('course', method_type='add') }}" class="btn btn-primary">Add</a>
+   <!-- <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal">Add</button> -->
   </div>
+  <!-- Modal -->
   <div>
     {% if request.args.get('error') %}
     <div class="alert alert-danger">
@@ -51,33 +51,24 @@
     </div>
     {% endif %}
   </div>
-   <table class="table">
-   <thead>
+  <table class="table">
+    <thead>
       <tr>
-        <th>Sl No</th>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>Dept</th>
-        <th>Email</th>
-        <th>Batch</th>
-        <th>Phone</th>
-        <th>Action</th>
+        <th>Sl.No</th>
+        <th>Course Name</th>
+        <th>Course Details</th>
       </tr>
-   </thead>
-   <tbody>
-   {% for item in students_data %}
+    </thead>
+    <tbody>
+    {% for item in course_data %}
     <tr>
-        <td>{{ item['sno'] }}</td>
-        <td>{{ item['name'] }}</td>
-        <td>{{ item['gender'] }}</td>
-        <td>{{ item['dept'] }}</td>
-        <td>{{ item['email'] }}</td>
-        <td>{{ item['batch'] }}</td>
-        <td>{{ item['phone'] }}</td>
-      <td>
-          <a href="{{ url_for('crud_students', students_id = item['id'], method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
-          <a href="{{ url_for('crud_students', students_id = item['id'], method_type='delete') }}" class="btn btn-danger">Delete</a>
-      </td>
+        <td>{{ item['sno']  }}</td>
+        <td>{{ item['coursename'] }}</td>
+        <td>{{ item['coursedetail'] }}</td>
+        <td>
+          <a href="{{ url_for('crud_course', course_id=item['id'],  method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
+          <a href="{{ url_for('crud_course', course_id=item['id'],  method_type='delete') }}" class="btn btn-danger">Delete</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
@@ -85,8 +76,8 @@
 </div>
 <script type="text/javascript">
   $(function(){
-    {% if request.args.get('single_single_data') %}
-      console.log(jQuery.parseJSON("{{ request.args.get('students_single_data') }}"));
+    {% if request.args.get('course_single_data') %}
+      console.log(jQuery.parseJSON("{{ request.args.get('course_single_data') }}"));
 
       alert("its here");
 
