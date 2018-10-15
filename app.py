@@ -287,11 +287,51 @@ def course():
         return render_template('course.html', session_user_name=username_session, course_data=add_serial_no(result))
     if request.method == 'POST':
         coursename = request.form['coursename']
-        coursedetails=request.form['coursedetails']
-        add_course = "INSERT INTO course (coursename, coursedetails) VALUES (%s, %s, %s, %s, %s)"
-        data_course = (coursename,coursedetails)
+        coursedetails = request.form['coursedetails']
+        add_course = "INSERT INTO course (coursename, coursedetails) VALUES (%s, %s)"
+        data_course = (coursename, coursedetails)
         try:
             cur.execute(add_course, data_course)
+            db.commit()
+        except Exception as ex:
+            error = ex
+        return redirect(url_for('course', error=error))
+
+
+@app.route('/course', methods=['GET', 'POST'])
+@login_required
+def crud_course():
+    if request.method == 'GET':
+            course_id = request.args.get('id')
+            method_type = request.args.get('method_type')
+            error = None
+            if method_type == 'add':
+                return render_template('crud_course.html', method_type=method_type)
+            elif method_type == 'delete':
+                delete_query = "DELETE FROM course WHERE id = %s"
+                select_data = (course_id,)
+                try:
+                    cur.execute(delete_query, select_data)
+                    db.commit()
+                except Exception as ex:
+                    error = ex
+                return redirect(url_for('course', error=error))
+            else:
+                select_query = "SELECT * FROM course where id=%s"
+                select_data = (course_id,)
+                cur.execute(select_query, select_data)
+                result = data_to_dict(cur)
+                return render_template('crud_course.html', method_type=method_type, trainer_data=result[0])
+    if request.method == 'POST':
+        id = request.form['id']
+        coursename = request.form['coursename']
+        coursedetails = request.form['coursedetails']
+        error = None
+        try:
+            cur.execute("""
+                           UPDATE course
+                           SET coursename=%s, coursedetails=%s WHERE id=%s
+                        """, (coursename, coursedetails, id))
             db.commit()
         except Exception as ex:
             error = ex

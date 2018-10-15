@@ -54,7 +54,7 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Sl.No</th>
+        <th>ID</th>
         <th>Course Name</th>
         <th>Course Details</th>
       </tr>
@@ -62,9 +62,9 @@
     <tbody>
     {% for item in course_data %}
     <tr>
-        <td>{{ item['sno']  }}</td>
+        <td>{{ item['id']  }}</td>
         <td>{{ item['coursename'] }}</td>
-        <td>{{ item['coursedetail'] }}</td>
+        <td>{{ item['coursedetails'] }}</td>
         <td>
           <a href="{{ url_for('crud_course', course_id=item['id'],  method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
           <a href="{{ url_for('crud_course', course_id=item['id'],  method_type='delete') }}" class="btn btn-danger">Delete</a>

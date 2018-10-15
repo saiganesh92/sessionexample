@@ -9,24 +9,19 @@
   <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 </head>
 <body>
-
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="{{ url_for('index') }}">SquireLogic</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="{{ url_for('hr') }}">HR</a></li>
           <li><a href="{{ url_for('students') }}">Students</a></li>
           <li><a href="{{ url_for('trainers') }}">Trainers</a></li>
+            <li><a href="{{ url_for('course') }}">Course</a> </li>
         </ul>
       </li>
-        <ul class="nav navbar-nav" >
-            <li class="button"><a href="{{ url_for('course') }}">Course</a></li>
-        </ul>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
@@ -42,9 +37,20 @@
   </div>
 </nav>
 <div class="container">
-  <h3>Dashboard</h3>
+  <h2>{% if method_type=='edit' %} Edit {% else %} Add {% endif %} Course  </h2>
+  <form action="{% if method_type=='edit' %}{{ url_for('crud_course') }}{% else %}{{ url_for('course') }}{% endif %}" method="POST">
+      <div class="form-group">
+        <label for="coursename">Course Name:</label>
+        <input type="text" class="form-control" id="coursename" placeholder="Enter Course Name " name="coursename" required value="{% if method_type=='edit'%} {{ course_data['coursename'] }}{% endif %}">
+          {% if method_type=='edit' %}<input type="hidden" id="id" name="id" value="{{ course_data['id'] }}">{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="coursedetails">Course Details</label>
+        <input type="text" class="form-control" id="coursedetails" placeholder="Enter Course Details" name="coursedetails" required value="{% if method_type=='edit'%} {{ course_data['coursedetails'] }}{% endif %}">
+      </div>
+      <button type="reset" class="btn btn-warning" >Clear</button>
+      <button type="submit" class="btn btn-primary" > {% if method_type=='edit' %}Update {% else %} Submit {% endif %}</button>
+  </form>
 </div>
-
-
 </body>
 </html>
