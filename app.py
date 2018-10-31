@@ -236,26 +236,26 @@ def trainers():
 @login_required
 def crud_trainers():
     if request.method == 'GET':
-            trainer_id = request.args.get('trainer_id')
-            method_type = request.args.get('method_type')
-            error = None
-            if method_type == 'add':
-                return render_template('crud_trainers.html', method_type=method_type)
-            elif method_type == 'delete':
-                delete_query = "DELETE FROM trainers WHERE id = %s"
-                select_data = (trainer_id,)
-                try:
-                    cur.execute(delete_query, select_data)
-                    db.commit()
-                except Exception as ex:
-                    error = ex
-                return redirect(url_for('trainer', error=error))
-            else:
-                select_query = "SELECT * FROM trainers where id=%s"
-                select_data = (trainer_id,)
-                cur.execute(select_query, select_data)
-                result = data_to_dict(cur)
-                return render_template('crud_trainers.html', method_type=method_type, trainer_data=result[0])
+        trainer_id = request.args.get('trainer_id')
+        method_type = request.args.get('method_type')
+        error = None
+        if method_type == 'add':
+            return render_template('crud_trainers.html', method_type=method_type)
+        elif method_type == 'delete':
+            delete_query = "DELETE FROM trainers WHERE id = %s"
+            select_data = (trainer_id,)
+            try:
+                cur.execute(delete_query, select_data)
+                db.commit()
+            except Exception as ex:
+                error = ex
+            return redirect(url_for('trainer', error=error))
+        else:
+            select_query = "SELECT * FROM trainers where id=%s"
+            select_data = (trainer_id,)
+            cur.execute(select_query, select_data)
+            result = data_to_dict(cur)
+            return render_template('crud_trainers.html', method_type=method_type, trainer_data=result[0])
     if request.method == 'POST':
         id = request.form['id']
         name = request.form['name']
@@ -279,7 +279,7 @@ def crud_trainers():
 @app.route('/course', methods=['GET', 'POST'])
 @login_required
 def course():
-    error=None
+    error = None
     if request.method == 'GET':
         username_session = escape(session['username']).capitalize()
         cur.execute("SELECT * FROM course;")
@@ -298,30 +298,31 @@ def course():
         return redirect(url_for('course', error=error))
 
 
-@app.route('/course', methods=['GET', 'POST'])
+@app.route('/courses', methods=['GET', 'POST'])
 @login_required
 def crud_course():
     if request.method == 'GET':
-            course_id = request.args.get('id')
-            method_type = request.args.get('method_type')
-            error = None
-            if method_type == 'add':
-                return render_template('crud_course.html', method_type=method_type)
-            elif method_type == 'delete':
-                delete_query = "DELETE FROM course WHERE id = %s"
-                select_data = (course_id,)
-                try:
-                    cur.execute(delete_query, select_data)
-                    db.commit()
-                except Exception as ex:
-                    error = ex
-                return redirect(url_for('course', error=error))
-            else:
-                select_query = "SELECT * FROM course where id=%s"
-                select_data = (course_id,)
-                cur.execute(select_query, select_data)
-                result = data_to_dict(cur)
-                return render_template('crud_course.html', method_type=method_type, trainer_data=result[0])
+        course_id = request.args.get('id')
+        method_type = request.args.get('method_type')
+        error = None
+        if method_type == 'add':
+            return render_template('crud_course.html', method_type=method_type)
+        elif method_type == 'delete':
+            delete_query = "DELETE FROM course WHERE id = %s"
+            select_data = (course_id,)
+            try:
+                cur.execute(delete_query, select_data)
+                db.commit()
+            except Exception as ex:
+                error = ex
+            return redirect(url_for('course', error=error))
+        else:
+            select_query = "SELECT * FROM course where id=%s"
+            select_data = (course_id,)
+            cur.execute(select_query, select_data)
+            result = data_to_dict(cur)
+            print(result)
+            return render_template('crud_course.html', method_type=method_type, trainer_data=result[0])
     if request.method == 'POST':
         id = request.form['id']
         coursename = request.form['coursename']
@@ -336,6 +337,21 @@ def crud_course():
         except Exception as ex:
             error = ex
         return redirect(url_for('course', error=error))
+
+
+@app.route('/fees')
+@login_required
+def fees():
+    error = None
+    if request.method == "GET":
+        username_session = escape(session['username']).capitalize()
+        cur.execute("SELECT * FROM course;")
+        result = data_to_dict(cur)
+        return render_template('fees.html', session_user_name=username_session, fees_data=add_serial_no(result))
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor()
+        db = cursor.execute("SELECT id, coursename FROM course")
+        return render_template('fees.html', workers0=cursor.fetchall())
 
 
 @app.route('/logout')

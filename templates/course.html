@@ -16,15 +16,20 @@
       <a class="navbar-brand" href="{{ url_for('index') }}">SquireLogic</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">HR <span class="caret"></span></a>
+      <li class="deactive"><a href="{{ url_for('index')}}">Home</a></li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="{{ url_for('hr') }}">HR</a></li>
           <li><a href="{{ url_for('students') }}">Students</a></li>
           <li><a href="{{ url_for('trainers') }}">Trainers</a></li>
         </ul>
       </li>
-      <li class="active"><a href="{{ url_for('course') }}">course</a></li>
+      <li class="active"><a href="{{ url_for('course') }}">Course</a></li>
     </ul>
+    <li>
+        <ul class="nav navbar-nav" >
+          <li class="button"><a href="#">Fees</a> </li>
+        </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
           <a href="#">

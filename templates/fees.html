@@ -16,21 +16,24 @@
       <a class="navbar-brand" href="{{ url_for('index') }}">SquireLogic</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">HR <span class="caret"></span></a>
+      <li class="active"><a href="#">Home</a></li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="{{ url_for('hr') }}">HR</a></li>
           <li><a href="{{ url_for('students') }}">Students</a></li>
           <li><a href="{{ url_for('trainers') }}">Trainers</a></li>
         </ul>
       </li>
-      <ul class="nav navbar-nav" >
+        <ul class="nav navbar-nav" >
             <li class="button"><a href="{{ url_for('course') }}">Course</a></li>
         </ul>
-    </ul>
+      <li>
         <ul class="nav navbar-nav" >
-          <li class="button"><a href="#">Fees</a> </li>
+          <li class="active"><a href="#">Fees</a> </li>
 
         </ul>
+      </li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
           <a href="#">
@@ -44,57 +47,24 @@
     </ul>
   </div>
 </nav>
-<div class="container">
-  <div class="form-group">
-    <a href="{{ url_for('crud_hr', method_type='add') }}" class="btn btn-primary">Add</a>
-   <!-- <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal">Add</button> -->
-  </div>
-  <!-- Modal -->
-  <div>
+<div>
     {% if request.args.get('error') %}
     <div class="alert alert-danger">
       <strong>Danger!</strong>{{ request.args.get('error') }}
     </div>
     {% endif %}
   </div>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Sl.No</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone Number</th>
-        <th>Salary</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for item in hr_data %}
-    <tr>
-        <td>{{ item['sno']  }}</td>
-        <td>{{ item['name'] }}</td>
-        <td>{{ item['email_id'] }}</td>
-        <td>{{ item['phone_no'] }}</td>
-        <td>{{ item['salary'] }}</td>
-        <td>
-          <a href="{{ url_for('crud_hr', hr_id=item['id'],  method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
-          <a href="{{ url_for('crud_hr', hr_id=item['id'],  method_type='delete') }}" class="btn btn-danger">Delete</a>
-        </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+<div class="dropdown">
+<button onclick="myFunction()" class="dropbtn">Dropdown</button>
+  <div id="myDropdown" class="dropdown-content">
+    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+    <a href="#">About</a>
+  </div>
 </div>
-<script type="text/javascript">
-  $(function(){
-    {% if request.args.get('hr_single_data') %}
-      console.log(jQuery.parseJSON("{{ request.args.get('hr_single_data') }}"));
+        <button type="submit" class="btn btn-primary" > Submit</button>
+ 
 
-      alert("its here");
 
-    {% endif %}
-  });
-</script>
 
 </body>
 </html>
