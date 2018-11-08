@@ -20,7 +20,7 @@
           <li><a href="{{ url_for('hr') }}">HR</a></li>
           <li><a href="{{ url_for('students') }}">Students</a></li>
           <li><a href="{{ url_for('trainers') }}">Trainers</a></li>
-            <li><a href="{{ url_for('course) }}">Course</a> </li>
+          <li><a href="{{ url_for('course) }}">Course</a> </li>
         </ul>
       </li>
     </ul>
@@ -33,7 +33,9 @@
             {% endif %}
           </a>
       </li>
-      <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      <li>
+          <a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span> Logout</a>
+      </li>
     </ul>
   </div>
 </nav>
