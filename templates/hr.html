@@ -76,6 +76,7 @@
         <td>{{ item['email_id'] }}</td>
         <td>{{ item['phone_no'] }}</td>
         <td>{{ item['salary'] }}</td>
+        <td> {{ items['sl.no'] }}</td>
         <td>
           <a href="{{ url_for('crud_hr', hr_id=item['id'],  method_type='edit') }}" class="btn btn-warning">Edit</a> &nbsp;
           <a href="{{ url_for('crud_hr', hr_id=item['id'],  method_type='delete') }}" class="btn btn-danger">Delete</a>
